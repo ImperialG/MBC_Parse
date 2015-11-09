@@ -13,7 +13,7 @@ logFileRootPath='MetaData/HeartAV_HCITaskLogfiles/'
 
 
 #Xls file for heart rate data
-#hrworkbook = xlrd.open_workbook(os.getcwd()+"/"+hrpath, on_demand = True) #Takes some time to open
+hrworkbook = xlrd.open_workbook(os.getcwd()+"/"+hrpath, on_demand = True) #Takes some time to open
 
 
 currentLogFile = logFileRootPath + xlsPath
@@ -38,6 +38,7 @@ if os.path.isfile(currentLogFile):
         targetName = None
         audioRootName = None
         time = None
+        hrSheetName = None
 
         #Assumes non empty row is well formatted
         if worksheet.cell(row, 0) != xlrd.empty_cell.value:
@@ -48,10 +49,19 @@ if os.path.isfile(currentLogFile):
         #Check if audio file exist
         audioFile =  audioFilesRootPath + audioRootName + '/' + 'vp_' + targetName +"_" + audioRootName + ".wav"
         if os.path.isfile(audioFile):
-            print "audio file exist", audioFile
-        else:
-            print "audio file does not  exist", audioFile
+            #print "audio file exist", audioFile
 
+           try:
+                if hrworkbook.sheet_by_name("vp_"  + targetName): #try to find Heartrate data
+                    print "vp_" + targetName, " exists"
+                    print json.dumps({'audioPath': audioFile, 'hrSheetName': hrSheetName },
+                            sort_keys=True, indent=4, separators=(',', ': '))
+           except:
+                    print "vp_" + targetName, " !exists"
+
+        else:
+            #print "audio file does not  exist", audioFile
+            pass
         """
         if hrworkbook.sheet_by_name("vp_"  + targetName): #try to find worksheet
               #Parse cols into json
