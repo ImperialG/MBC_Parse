@@ -13,7 +13,7 @@ import json
 xlsPath = '035_01_00_Log.xls'
 hrRootPath = 'HeartAV_AudioFiles/'
 newDir ='config/'
-hrpath = 'HeartRate.xlsx'
+hrpath = 'HeartAV_HeartRateFiles/HeartRate.xlsx'
 #For each log file
 #Indexed by row, col of worksheet
 
