@@ -2,6 +2,8 @@ import xlrd
 import os.path
 import json
 import sys
+import wave
+import contextlib
 
 ##
 xlsPath = '035_01_00_Log.xls'
@@ -10,11 +12,21 @@ audioFilesRootPath = 'HeartAV_AudioFiles/'
 newDir ='config/'
 hrpath = 'HeartAV_HeartRateFiles/HeartRate.xlsx'
 logFileRootPath='MetaData/HeartAV_HCITaskLogfiles/'
+audiopath = '/M1F1-uint8-AFsp.wav'
+
+#checks if audio exists
+if os.path.isfile(os.getcwd()+audiopath):
+  #opens audio and gets duration
+  with contextlib.closing(wave.open(os.getcwd()+audiopath,'r')) as f:
+    frames = f.getnframes()
+    rate = f.getframerate()
+    duration = (int) (frames / float(rate))
+    print("duration of file is:",duration)
 
 
 #Xls file for heart rate data
 hrworkbook = xlrd.open_workbook(os.getcwd()+"/"+hrpath, on_demand = True) #Takes some time to open
-
+print("got past opening file")
 
 currentLogFile = logFileRootPath + xlsPath
 if os.path.isfile(currentLogFile):
@@ -49,7 +61,7 @@ if os.path.isfile(currentLogFile):
         #Check if audio file exist
         audioFile =  audioFilesRootPath + audioRootName + '/' + 'vp_' + targetName +"_" + audioRootName + ".wav"
         if os.path.isfile(audioFile):
-            #print "audio file exist", audioFile
+           print "audio file exist", audioFile
 
            try:
                 if hrworkbook.sheet_by_name("vp_"  + targetName): #try to find Heartrate data
