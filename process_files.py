@@ -2,8 +2,8 @@ import os
 import sys
 import re
 import csv
-import datetime
 import string
+import datetime
 import xlrd
 
 def traverseThroughFolder(current_path,out_path,meta_dir):
@@ -32,15 +32,16 @@ def appendToCSV(file_path,cand,task,meta_dir,outfile):
       remove = string.whitespace;
       for row in range(worksheet.nrows):
         if(str(worksheet.cell(row, 1).value).lower().translate(None,remove) == task.lower().translate(None,remove)):
-          time = worksheet.cell(row, 5).value
+          (_,_,_,hh,mm,ss) = xlrd.xldate_as_tuple(worksheet.cell(row, 5).value,workbook.datemode);
           name = cand+'_'+task;
-          outfile.write(name+','+str(time)+'\n');
+          time = str(hh)+':'+str(mm)+':'+str(ss);
+          outfile.write(name+','+time+'\n');
           break;
       if(time == None):
         print('filepath',user_meta_file);
         print('not found time for',task);
     except:
-      print("Sheet doesn't exist in file", user_meta_file);
+      print('worksheet Tabelle1 does not exist',user_meta_file);
   return  
 
 argv = sys.argv
