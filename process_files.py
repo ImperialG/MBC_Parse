@@ -2,6 +2,9 @@ import os
 import sys
 import re
 import csv
+import datetime
+import string
+import xlrd
 
 def traverseThroughFolder(current_path,out_path,meta_dir):
   files_and_folders = os.listdir(current_path);
@@ -20,12 +23,24 @@ def traverseThroughFolder(current_path,out_path,meta_dir):
   return
 
 def appendToCSV(file_path,cand,task,meta_dir,outfile):
-  user_meta_file = meta_dir + '/' + cand;
-  #open tabelle1
-  #find row with column 2 = task and get time
-  time = 0;
-  outfile.write(str(file_path)+','+str(time)+'\n');
-  #append file_path and time to end of outfile
+  user_meta_file = meta_dir + '/' + cand + '_Log.xls';
+  if os.path.isfile(user_meta_file):
+    workbook = xlrd.open_workbook(user_meta_file, on_demand = True)
+    try:
+      worksheet = workbook.sheet_by_name("Tabelle1")
+      time = None
+      remove = string.whitespace;
+      for row in range(worksheet.nrows):
+        if(str(worksheet.cell(row, 1).value).lower().translate(None,remove) == task.lower().translate(None,remove)):
+          time = worksheet.cell(row, 5).value
+          name = cand+'_'+task;
+          outfile.write(name+','+str(time)+'\n');
+          break;
+      if(time == None):
+        print('filepath',user_meta_file);
+        print('not found time for',task);
+    except:
+      print("Sheet doesn't exist in file", user_meta_file);
   return  
 
 argv = sys.argv

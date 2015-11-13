@@ -1,0 +1,7 @@
+('filepath', '/media/sinduran/388493388492F798/HeartAV/MetaData/HeartAV_HCITaskLogfiles/037_02_00_Log.xls')
+('not found time for', 'reststop')
+('filepath', '/media/sinduran/388493388492F798/HeartAV/MetaData/HeartAV_HCITaskLogfiles/038_02_00_Log.xls')
+('not found time for', 'reststop')
+('filepath', '/media/sinduran/388493388492F798/HeartAV/MetaData/HeartAV_HCITaskLogfiles/037_02_00_Log.xls')
+('not found time for', 'story_disgust_childhood')
+
